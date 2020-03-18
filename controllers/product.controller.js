@@ -7,14 +7,13 @@ exports.test = function (req, res) {
 
 
 exports.product_create = function (req, res ,next) {
-    console.log('req2222222222222222222222222',req.body)
     let product = new Product(
         {
+            _id: req.body._id,
             text: req.body.text,
             completed: req.body.completed
         }
     );
-
     product.save(function (err) {
         if (err) {
             return next(err)
@@ -29,6 +28,12 @@ exports.product_details = function (req, res,next) {
         res.send(product);
     })
 };
+
+exports.product_all = function (req , res) {
+    Product.find({}).then(function (product) {
+    res.send(product);
+    });
+   }
 
 exports.product_update = function (req, res,next) {
     Product.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, product) {
